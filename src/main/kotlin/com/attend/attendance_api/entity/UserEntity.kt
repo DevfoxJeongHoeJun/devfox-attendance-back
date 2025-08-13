@@ -28,7 +28,7 @@ class UserEntity(
     var email: String,
 
     @Column(nullable = false)
-    private var password: String,
+    var password: String,
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
