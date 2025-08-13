@@ -22,15 +22,13 @@ class AccessLevelEntity(
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_user", nullable = false)
-    var createdUser: UserEntity,
+    @Column(insertable = false)
+    var createdUser: Long,
 
     @UpdateTimestamp
     @Column(insertable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_user", nullable = false)
-    var updatedUser: UserEntity
+    @Column(insertable = false)
+    var updatedUser: Long,
 )

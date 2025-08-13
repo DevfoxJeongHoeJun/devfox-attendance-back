@@ -2,6 +2,7 @@ package com.attend.attendance_api.entity
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
+import lombok.Builder
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
@@ -13,13 +14,11 @@ class UserEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "access_level_code", nullable = false)
-    var accessLevel: AccessLevelEntity,
+    @Column(nullable = false)
+    var accessLevelCode: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_code", nullable = false)
-    var group: GroupEntity,
+    @Column(nullable = false)
+    var groupCode: String,
 
     @Column(nullable = false)
     var name: String,
@@ -35,16 +34,14 @@ class UserEntity(
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_user")
-    var createdUser: UserEntity? = null,
+    @Column(insertable = false)
+    var createdUser: Long,
 
     @UpdateTimestamp
     @Column(insertable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_user")
-    var updatedUser: UserEntity? = null,
+    @Column(insertable = false)
+    var updatedUser: Long,
 
     )
