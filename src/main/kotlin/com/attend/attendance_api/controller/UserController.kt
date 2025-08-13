@@ -1,6 +1,12 @@
 package com.attend.attendance_api.controller
 
+import com.attend.attendance_api.common.ApiResponse
+import com.attend.attendance_api.dto.LoginRequest
+import com.attend.attendance_api.dto.LoginResDto
 import com.attend.attendance_api.service.UserService
+import jakarta.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpSession
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,16 +20,13 @@ class UserController(
     private val userService: UserService) {
 
     @PostMapping("/login")
-    fun login(@RequestBody user: Map<String, String>): Map<String, String> {
-        val username = user["username"]
-        val password = user["password"]
+    fun login(session: HttpSession, res: HttpServletResponse, @RequestBody loginRequest: LoginRequest): ApiResponse<LoginResDto> {
+        val loginResDto: LoginResDto = userService.login(session, loginRequest)
 
-        println("受信: username=$username, password=$password")
-
-        return mapOf(
-            "status" to if (username == "testuser" && password == "1234") "ok" else "error",
-            "message" to "サーバーからの応答です"
-        )
+        if (loginResDto != null) {
+            return ApiResponse(HttpStatus.OK, "成功",loginResDto)
+        }
+        return ApiResponse(HttpStatus.NOT_FOUND, "失敗",loginResDto)
     }
 
 }
