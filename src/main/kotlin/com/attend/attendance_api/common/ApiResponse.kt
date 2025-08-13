@@ -1,9 +1,9 @@
 package com.attend.attendance_api.common
 
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.http.HttpStatus
 
 class ApiResponse<T>(
-    var status: ResponseStatus,
+    var status: HttpStatus,
     var message: String,
     var body: T
 )

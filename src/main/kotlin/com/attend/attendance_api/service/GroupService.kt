@@ -5,8 +5,8 @@ import com.attend.attendance_api.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class GroupService(
-    private val userRepository: UserRepository,
-    private val groupRepository: GroupRepository
-) {
+class GroupService(private val userRepository: UserRepository, private val groupRepository: GroupRepository) {
+
+
+
 }
