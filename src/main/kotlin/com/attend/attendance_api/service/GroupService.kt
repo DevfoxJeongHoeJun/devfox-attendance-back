@@ -2,8 +2,6 @@ package com.attend.attendance_api.service
 
 import com.attend.attendance_api.dto.AttendListRequest
 import com.attend.attendance_api.dto.AttendListResponse
-import com.attend.attendance_api.entity.AttendEntity
-import com.attend.attendance_api.entity.UserEntity
 import com.attend.attendance_api.repository.AttendanceRepository
 import com.attend.attendance_api.repository.GroupRepository
 import com.attend.attendance_api.repository.UserRepository

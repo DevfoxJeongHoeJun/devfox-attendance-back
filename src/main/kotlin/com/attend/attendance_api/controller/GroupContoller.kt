@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/group")
-class GroupContoller(
-    private val groupService: GroupService,
-    private val userService: UserService
-) {
+class GroupContoller(private val groupService: GroupService, private val userService: UserService) {
+
+
 }
