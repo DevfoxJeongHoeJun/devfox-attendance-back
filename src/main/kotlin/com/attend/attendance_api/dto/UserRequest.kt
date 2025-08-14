@@ -1,4 +1,4 @@
-package com.attend.attendance_api.DTO
+package com.attend.attendance_api.dto
 
 import java.time.LocalDateTime
 

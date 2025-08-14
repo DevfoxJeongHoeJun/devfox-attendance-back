@@ -1,5 +1,6 @@
 package com.attend.attendance_api.controller
 
+import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.common.ApiResponse
 import com.attend.attendance_api.dto.LoginRequest
 import com.attend.attendance_api.dto.LoginResDto
@@ -7,11 +8,7 @@ import com.attend.attendance_api.service.UserService
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.springframework.http.HttpStatus
-import com.attend.attendance_api.DTO.LocationRequest
-import com.attend.attendance_api.DTO.UserRequest
-import com.attend.attendance_api.entity.AttendEntity
 import com.attend.attendance_api.entity.UserEntity
-import jakarta.transaction.Transactional
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
