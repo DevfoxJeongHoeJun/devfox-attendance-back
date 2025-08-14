@@ -27,8 +27,8 @@ class AccessLevelEntity(
 
     @UpdateTimestamp
     @Column(insertable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    var updatedAt: LocalDateTime? = LocalDateTime.now(),
 
     @Column(insertable = false)
-    var updatedUser: Long,
+    var updatedUser: Long? = null,
 )

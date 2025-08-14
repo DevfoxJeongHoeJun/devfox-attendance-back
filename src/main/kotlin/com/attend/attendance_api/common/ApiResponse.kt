@@ -5,5 +5,5 @@ import org.springframework.http.HttpStatus
 class ApiResponse<T>(
     var status: HttpStatus,
     var message: String,
-    var body: T
+    var body: T? = null
 )

@@ -3,12 +3,11 @@ package com.attend.attendance_api.controller
 import com.attend.attendance_api.common.ApiResponse
 import com.attend.attendance_api.dto.LoginRequest
 import com.attend.attendance_api.dto.LoginResDto
-import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.service.UserService
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.springframework.http.HttpStatus
-import com.attend.attendance_api.entity.AttendEntity
+import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.entity.UserEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,7 +23,7 @@ class UserController(private val userService: UserService) {
 
     @PostMapping("/login")
     fun login(session: HttpSession, res: HttpServletResponse, @RequestBody loginRequest: LoginRequest): ApiResponse<LoginResDto> {
-        val loginResDto: LoginResDto = userService.login(session, loginRequest)
+        val loginResDto: LoginResDto = userService.login(session, loginRequest, res)
 
         if (loginResDto != null) {
             return ApiResponse(HttpStatus.OK, "成功",loginResDto)
@@ -47,10 +46,16 @@ class UserController(private val userService: UserService) {
     }
 
     //勤怠打刻画面-------------------------------------------
-//    fun addAttendance(@RequestBody request: UserRequest){
+//    @GetMapping("attendInfo")
+//    fun attendInfo(id: Long): AttendEntity{
 //
 //    }
 
 
-
+    //位置情報確認
+//    @PostMapping("/location")
+//    fun receiveLocation(@RequestBody location: LocationRequest): String{
+//        println("受け取った位置: 緯度=${location.latitude}, 経度=${location.longitude}")
+//        return "位置受信成功"
+//    }
 }
