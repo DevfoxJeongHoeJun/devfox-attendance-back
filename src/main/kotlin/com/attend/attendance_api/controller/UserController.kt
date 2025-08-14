@@ -7,10 +7,10 @@ import com.attend.attendance_api.service.UserService
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
 import org.springframework.http.HttpStatus
-import com.attend.attendance_api.DTO.LocationRequest
-import com.attend.attendance_api.DTO.UserRequest
+import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.entity.AttendEntity
 import com.attend.attendance_api.entity.UserEntity
+import jakarta.servlet.http.Cookie
 import jakarta.transaction.Transactional
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,13 +25,23 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(private val userService: UserService) {
 
     @PostMapping("/login")
-    fun login(session: HttpSession, res: HttpServletResponse, @RequestBody loginRequest: LoginRequest): ApiResponse<LoginResDto> {
-        val loginResDto: LoginResDto = userService.login(session, loginRequest)
+    fun login(session: HttpSession,res: HttpServletResponse,  @RequestBody loginRequest: LoginRequest): ApiResponse<LoginResDto> {
+        val loginResDto: LoginResDto = userService.login(session, loginRequest,res)
 
         if (loginResDto != null) {
             return ApiResponse(HttpStatus.OK, "成功",loginResDto)
         }
         return ApiResponse(HttpStatus.NOT_FOUND, "失敗",loginResDto)
+    }
+
+    @GetMapping("/session")
+    fun session(session: HttpSession,res: HttpServletResponse): ApiResponse<String> {
+        println(" if(session.getAttribute(\"userId\") != null) {")
+        if(session.getAttribute("userId") != null) {
+            println(" -------------------")
+            return ApiResponse(HttpStatus.OK, "成功", "sessionCheck")
+        }
+        return ApiResponse(HttpStatus.NOT_FOUND, "失敗","sessionCheck")
     }
 
     //Global Usage
