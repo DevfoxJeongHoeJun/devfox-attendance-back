@@ -5,15 +5,18 @@ import com.attend.attendance_api.dto.LoginResDto
 import com.attend.attendance_api.entity.UserEntity
 import com.attend.attendance_api.repository.UserRepository
 import jakarta.servlet.http.HttpSession
-import com.attend.attendance_api.DTO.UserRequest
+import com.attend.attendance_api.dto.UserRequest
 import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletResponse
+
 
 @Service
 class UserService(private val userRepository: UserRepository) {
 
-    fun login(session: HttpSession,loginRequest: LoginRequest): LoginResDto {
+    fun login(session: HttpSession,loginRequest: LoginRequest,res: HttpServletResponse): LoginResDto {
         var userEntiry : UserEntity?
         userEntiry = userRepository.findByEmail(loginRequest.email)
 
@@ -25,13 +28,31 @@ class UserService(private val userRepository: UserRepository) {
                 if(userEntiry != null){
                     session.setAttribute("username", userEntiry.name)
                     session.setAttribute("userId", userEntiry.id)
-                    session.setAttribute("ROLE", userEntiry.accessLevelCode)
+                    session.setAttribute("role", userEntiry.accessLevelCode)
                     session.setAttribute("groupCode", userEntiry.groupCode)
 
-                    println(session.getAttribute("username"))
-                    println(session.getAttribute("userId"))
-                    println(session.getAttribute("ROLE"))
-                    println(session.getAttribute("groupCode"))
+                    val cookieUserName = Cookie("username",  session.getAttribute("username")?.toString())
+                    cookieUserName.isHttpOnly = true
+                    cookieUserName.secure = false
+                    cookieUserName.maxAge = 60 * 60 * 12;
+                    val cookieUserId = Cookie("userId", session.getAttribute("userId")?.toString())
+                    cookieUserId.isHttpOnly = true
+                    cookieUserId.secure = false
+                    cookieUserId.maxAge = 60 * 60 * 12;
+                    val cookieRole = Cookie("role", session.getAttribute("role")?.toString())
+                    cookieRole.isHttpOnly = true
+                    cookieRole.secure = false
+                    cookieRole.maxAge = 60 * 60 * 12;
+                    val cookieGroupCode = Cookie("groupCode", session.getAttribute("groupCode")?.toString())
+                    cookieGroupCode.isHttpOnly = true
+                    cookieGroupCode.secure = false
+                    cookieGroupCode.maxAge = 60 * 60 * 12;
+
+                    res.addCookie(cookieUserName)
+                    res.addCookie(cookieUserId)
+                    res.addCookie(cookieRole)
+                    res.addCookie(cookieGroupCode)
+
                 }
                 var loginResDto = LoginResDto(userEntiry)
                 return loginResDto;
