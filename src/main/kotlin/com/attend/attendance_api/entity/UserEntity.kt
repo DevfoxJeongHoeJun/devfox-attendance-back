@@ -2,14 +2,13 @@ package com.attend.attendance_api.entity
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
-import lombok.Builder
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "users")
-class UserEntity(
+data class UserEntity(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
@@ -39,9 +38,9 @@ class UserEntity(
 
     @UpdateTimestamp
     @Column(insertable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    var updatedAt: LocalDateTime? = LocalDateTime.now(),
 
     @Column(insertable = false)
-    var updatedUser: Long,
+    var updatedUser: Long? = null,
 
     )
