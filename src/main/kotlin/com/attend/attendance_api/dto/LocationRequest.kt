@@ -1,4 +1,4 @@
-package com.attend.attendance_api.DTO
+package com.attend.attendance_api.dto
 
 data class LocationRequest (
     val latitude: Double,

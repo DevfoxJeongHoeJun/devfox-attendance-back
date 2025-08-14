@@ -34,9 +34,8 @@ class GroupEntity(
 
     @UpdateTimestamp
     @Column(insertable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    var updatedAt: LocalDateTime? = LocalDateTime.now(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_user", nullable = false)
-    var updatedUser: UserEntity,
+    @Column(insertable = false)
+    var updatedUser: Long? = null,
 )

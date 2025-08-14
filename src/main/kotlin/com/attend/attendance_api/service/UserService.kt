@@ -5,7 +5,7 @@ import com.attend.attendance_api.dto.LoginResDto
 import com.attend.attendance_api.entity.UserEntity
 import com.attend.attendance_api.repository.UserRepository
 import jakarta.servlet.http.HttpSession
-import com.attend.attendance_api.DTO.UserRequest
+import com.attend.attendance_api.dto.UserRequest
 import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
