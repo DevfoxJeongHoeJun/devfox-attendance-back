@@ -35,7 +35,7 @@ class UserController(private val userService: UserService) {
     @PostMapping("/login")
     fun login(session: HttpSession, res: HttpServletResponse,
               @RequestBody loginRequest: LoginRequest): ApiResponse<LoginResDto> {
-        val loginResDto: LoginResDto = userService.login(session, loginRequest, res)
+        val loginResDto: LoginResDto? = userService.login(session, loginRequest, res)
 
         if (loginResDto != null) {
             return ApiResponse(HttpStatus.OK, "成功",loginResDto)
@@ -93,5 +93,3 @@ class UserController(private val userService: UserService) {
         return ApiResponse(HttpStatus.OK, "success","sessionCheck")
     }
 }
-
-////////////////////////kimsunhyeon

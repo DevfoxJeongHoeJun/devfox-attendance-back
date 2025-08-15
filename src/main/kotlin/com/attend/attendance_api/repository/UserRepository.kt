@@ -9,6 +9,6 @@ import java.time.LocalDate
 import java.util.Optional
 
 interface UserRepository: JpaRepository<UserEntity, Long> {
-    fun  findByEmail(email: String): UserEntity
+    fun findByEmail(email: String): Optional<UserEntity>
 
 }
