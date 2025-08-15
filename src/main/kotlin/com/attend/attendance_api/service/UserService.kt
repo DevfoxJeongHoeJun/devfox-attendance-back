@@ -23,20 +23,21 @@ import java.time.LocalDateTime
 @Service
 class UserService(private val userRepository: UserRepository, private val attendanceRepository: AttendanceRepository) {
 
-    fun login(session: HttpSession,loginRequest: LoginRequest,res: HttpServletResponse): LoginResDto {
-        var userEntiry : UserEntity?
-        userEntiry = userRepository.findByEmail(loginRequest.email)
+    fun login(session: HttpSession,loginRequest: LoginRequest,res: HttpServletResponse): LoginResDto? {
+
+        val userEntity = userRepository.findByEmail(loginRequest.email)
+            .orElse(null)
 
 
-        if(userEntiry != null){
+        if(userEntity != null){
 
-            if (userEntiry.password == loginRequest.password){
+            if (userEntity.password == loginRequest.password){
 
-                if(userEntiry != null){
-                    session.setAttribute("username", userEntiry.name)
-                    session.setAttribute("userId", userEntiry.id)
-                    session.setAttribute("role", userEntiry.accessLevelCode)
-                    session.setAttribute("groupCode", userEntiry.groupCode)
+                if(userEntity != null){
+                    session.setAttribute("username", userEntity.name)
+                    session.setAttribute("userId", userEntity.id)
+                    session.setAttribute("role", userEntity.accessLevelCode)
+                    session.setAttribute("groupCode", userEntity.groupCode)
 
                     val cookieUserName = Cookie("username",  session.getAttribute("username")?.toString())
                     cookieUserName.isHttpOnly = true
@@ -61,12 +62,14 @@ class UserService(private val userRepository: UserRepository, private val attend
                     res.addCookie(cookieGroupCode)
 
                 }
-                var loginResDto = LoginResDto(userEntiry)
+                var loginResDto = LoginResDto(userEntity)
                 return loginResDto;
             }
 
+        } else {
+            return null;
         }
-            var loginResDto = LoginResDto(userEntiry)
+        var loginResDto = LoginResDto(userEntity)
         return loginResDto;
     }
 
