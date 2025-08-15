@@ -1,20 +1,27 @@
 package com.attend.attendance_api.service
 
+import com.attend.attendance_api.dto.AttendEndRequest
+import com.attend.attendance_api.dto.AttendResponse
+import com.attend.attendance_api.dto.AttendStartRequest
 import com.attend.attendance_api.dto.LoginRequest
 import com.attend.attendance_api.dto.LoginResDto
 import com.attend.attendance_api.entity.UserEntity
 import com.attend.attendance_api.repository.UserRepository
 import jakarta.servlet.http.HttpSession
 import com.attend.attendance_api.dto.UserRequest
+import com.attend.attendance_api.entity.AttendEntity
+import com.attend.attendance_api.repository.AttendanceRepository
 import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 @Service
-class UserService(private val userRepository: UserRepository) {
+class UserService(private val userRepository: UserRepository, private val attendanceRepository: AttendanceRepository) {
 
     fun login(session: HttpSession,loginRequest: LoginRequest,res: HttpServletResponse): LoginResDto {
         var userEntiry : UserEntity?
@@ -97,7 +104,6 @@ class UserService(private val userRepository: UserRepository) {
         fun updateUser(request: UserRequest) {
             val user = userRepository.findById(request.id)
                 .orElseThrow { IllegalArgumentException("User not found") }//ユーザーが存在しない場合エーラーを発生します。
-
             user?.let { it.id = request.id }
             user?.let { it.accessLevelCode = request.accessLevelCode }
             user?.let { it.groupCode = request.groupCode }
@@ -110,6 +116,54 @@ class UserService(private val userRepository: UserRepository) {
             user?.let { it.updatedUser = request.updatedUser }
         }
     }
+
+    //Attendからユーザーを探す
+    fun getAttend(userId: Long): AttendResponse? {
+        val today = LocalDate.now()
+        val attend = attendanceRepository.findByUserIdAndDate(userId, today)
+        return attend?.let {
+                AttendResponse(
+                    id = it.id,
+                    userId = it.userId,
+                    date = it.date,
+                    type = it.type,
+                    startTime = it.startTime,
+                    endTime = it.endTime
+                )
+            }
+        }
+    //出勤処理
+    fun startWork(request: AttendStartRequest) {
+        val attend = AttendEntity(
+            id = 0, // auto increment
+            userId = request.userId,
+            date = request.date,
+            type = request.type,
+            startTime = request.startTime,
+            startLocation = request.startLocation,
+            endTime = null,
+            endLocation = "",
+            createdAt = LocalDateTime.now(),
+            createdUser = request.createdUser,
+            updatedAt = null,
+            updatedUser = null
+        )
+        attendanceRepository.save(attend)
+    }
+    //退勤処理
+    fun endWork(attendId: Long, request: AttendEndRequest) {
+
+        val attend = attendanceRepository.findById(attendId)
+            .orElseThrow { RuntimeException("出勤記録がありません。") }
+
+            attend.endTime = request.endTime
+            attend.endLocation = request.endLocation
+            attend.updatedAt = LocalDateTime.now()
+            attend.updatedUser = request.updatedUser
+
+        attendanceRepository.save(attend)
+    }
+
 }
 
 
