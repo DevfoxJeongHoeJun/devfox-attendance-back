@@ -31,6 +31,16 @@ class UserController(private val userService: UserService) {
         return ApiResponse(HttpStatus.NOT_FOUND, "失敗",loginResDto)
     }
 
+    @GetMapping("/session")
+    fun session(session: HttpSession,res: HttpServletResponse): ApiResponse<String> {
+        println("session")
+        println(session.getAttribute("userId"))
+        if(session.getAttribute("userId") != null) {
+            return ApiResponse(HttpStatus.OK, "成功", "sessionCheck")
+        }
+        return ApiResponse(HttpStatus.NOT_FOUND, "失敗","sessionCheck")
+    }
+
     //Global Usage
     //全てのユーザーデータ入手
     @GetMapping("/getUsers")

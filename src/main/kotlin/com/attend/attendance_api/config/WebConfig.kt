@@ -13,5 +13,6 @@ class WebConfig : WebMvcConfigurer {
             .allowedOrigins("http://localhost:30000") //
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowCredentials(true)
+            .exposedHeaders("Set-Cookie");
     }
 }
