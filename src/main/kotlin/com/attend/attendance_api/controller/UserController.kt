@@ -92,4 +92,5 @@ class UserController(private val userService: UserService) {
     fun login(session: HttpSession, @RequestBody role: String): ApiResponse<String> {
         return ApiResponse(HttpStatus.OK, "success","sessionCheck")
     }
+//
 }
