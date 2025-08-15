@@ -136,9 +136,8 @@ class UserService(private val userRepository: UserRepository, private val attend
             }
         }
     //出勤処理
-    fun startWork(request: AttendStartRequest) {
+    fun startWork(request: AttendStartRequest): AttendEntity {
         val attend = AttendEntity(
-            id = 0, // auto increment
             userId = request.userId,
             date = request.date,
             type = request.type,
@@ -151,7 +150,7 @@ class UserService(private val userRepository: UserRepository, private val attend
             updatedAt = null,
             updatedUser = null
         )
-        attendanceRepository.save(attend)
+        return attendanceRepository.save(attend)
     }
     //退勤処理
     fun endWork(attendId: Long, request: AttendEndRequest) {

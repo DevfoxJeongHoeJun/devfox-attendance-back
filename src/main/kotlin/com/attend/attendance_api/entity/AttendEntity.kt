@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 class AttendEntity(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    var id: Long = 0,
 
     @Column(nullable = false)
     var userId: Long,
@@ -25,11 +25,11 @@ class AttendEntity(
     @Column(nullable = false)
     var startTime: LocalDateTime,
 
-    var startLocation: String,
+    var startLocation: String?,
 
     var endTime: LocalDateTime? = null,
 
-    var endLocation: String,
+    var endLocation: String?,
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
