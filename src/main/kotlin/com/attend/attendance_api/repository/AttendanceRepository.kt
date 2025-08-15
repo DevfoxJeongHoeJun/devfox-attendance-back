@@ -68,4 +68,6 @@ interface AttendanceRepository: JpaRepository<AttendEntity, Long> {
         @Param("userName") userName: String,
         pageable: Pageable
     ): Page<AttendListResponse>
+
+    fun findByUserIdAndDate(userId: Long, date: LocalDate): AttendEntity? //idを利用してユーザーを探す
 }

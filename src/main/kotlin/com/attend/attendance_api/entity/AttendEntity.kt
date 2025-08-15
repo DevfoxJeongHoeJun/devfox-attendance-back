@@ -25,7 +25,6 @@ class AttendEntity(
     @Column(nullable = false)
     var startTime: LocalDateTime,
 
-    @Column(nullable = false)
     var startLocation: String,
 
     var endTime: LocalDateTime? = null,
