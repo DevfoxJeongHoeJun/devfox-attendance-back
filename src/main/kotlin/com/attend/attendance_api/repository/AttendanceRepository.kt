@@ -20,6 +20,7 @@ interface AttendanceRepository: JpaRepository<AttendEntity, Long> {
             d.date,
             u.id AS user_id,
             u.name AS user_name,
+            a.type,
             a.start_time,
             a.end_time,
             a.start_location,
