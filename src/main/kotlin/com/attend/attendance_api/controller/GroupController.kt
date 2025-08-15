@@ -3,12 +3,10 @@ package com.attend.attendance_api.controller
 import com.attend.attendance_api.common.ApiResponse
 import com.attend.attendance_api.dto.AttendListRequest
 import com.attend.attendance_api.dto.AttendListResponse
-import com.attend.attendance_api.dto.LoginResDto
 import com.attend.attendance_api.service.GroupService
 import com.attend.attendance_api.service.UserService
 import jakarta.servlet.http.HttpSession
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

@@ -45,4 +45,6 @@ interface AttendanceRepository: JpaRepository<AttendEntity, Long> {
         @Param("endDate") endDate: LocalDate,
         @Param("userName") userName: String
     ): List<AttendListResponse>
+
+    fun findByUserIdAndDate(userId: Long, date: LocalDate): AttendEntity? //idを利用してユーザーを探す
 }
