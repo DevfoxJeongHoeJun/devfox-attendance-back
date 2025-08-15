@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.service.annotation.PutExchange
 import java.time.LocalDate
@@ -42,6 +43,16 @@ class UserController(private val userService: UserService) {
         return ApiResponse(HttpStatus.NOT_FOUND, "失敗",loginResDto)
     }
 
+    @GetMapping("/session")
+    fun session(session: HttpSession,res: HttpServletResponse): ApiResponse<String> {
+        println("session")
+
+        if(session.getAttribute("userId") != null) {
+            return ApiResponse(HttpStatus.OK, "成功", "sessionCheck")
+        }
+        return ApiResponse(HttpStatus.NOT_FOUND, "失敗","sessionCheck")
+    }
+
     //Global Usage
     //全てのユーザーデータ入手
     @GetMapping("/getUsers")
@@ -56,7 +67,7 @@ class UserController(private val userService: UserService) {
         return "user Add Success!"
     }
 
-    //勤怠打刻画面-------------------------------------------
+    //勤怠打刻画面------------------------------------------
     @GetMapping("/searchAttend/{userId}")
     fun getAttend(@PathVariable userId: Long): ResponseEntity<AttendResponse?> {
         val result = userService.getAttend(userId)
@@ -75,5 +86,10 @@ class UserController(private val userService: UserService) {
         userService.endWork(attendId, request)
         return ResponseEntity.ok("退勤処理完了")
     }
-
+    
+    //アプリ管理者画面------------------------------------------
+     @PostMapping("/appUserList")
+    fun login(session: HttpSession, @RequestBody role: String): ApiResponse<String> {
+        return ApiResponse(HttpStatus.OK, "success","sessionCheck")
+    }
 }
