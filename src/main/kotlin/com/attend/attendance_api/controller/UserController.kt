@@ -88,8 +88,5 @@ class UserController(private val userService: UserService) {
     }
     
     //アプリ管理者画面------------------------------------------
-     @PostMapping("/appUserList")
-    fun login(session: HttpSession, @RequestBody role: String): ApiResponse<String> {
-        return ApiResponse(HttpStatus.OK, "success","sessionCheck")
-    }
+
 }
