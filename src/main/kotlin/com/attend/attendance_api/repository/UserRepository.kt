@@ -112,5 +112,9 @@ interface UserRepository: JpaRepository<UserEntity, Long> {
 //""",
         nativeQuery = true
     )
+
     fun getUsersWithGroup(): List<UsersListResponse>
+
+    fun existsByEmail(email: String): Boolean
+
 }

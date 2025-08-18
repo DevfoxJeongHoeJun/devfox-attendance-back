@@ -16,12 +16,17 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 
 @Service
-class UserService(private val userRepository: UserRepository, private val attendanceRepository: AttendanceRepository) {
+class UserService(
+    private val userRepository: UserRepository,
+    private val attendanceRepository: AttendanceRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
 
     fun login(session: HttpSession,loginRequest: LoginRequest,res: HttpServletResponse): LoginResDto? {
 
@@ -31,7 +36,7 @@ class UserService(private val userRepository: UserRepository, private val attend
 
         if(userEntity != null){
 
-            if (userEntity.password == loginRequest.password){
+            if (userEntity.password == passwordEncoder.encode(loginRequest.password)){
 
                 if(userEntity != null){
                     session.setAttribute("username", userEntity.name)
@@ -83,6 +88,12 @@ class UserService(private val userRepository: UserRepository, private val attend
         return null;
     }
 
+    fun existsByEmail(email: String): Boolean {
+        val existsByEmail = userRepository.existsByEmail(email);
+
+        return existsByEmail;
+    }
+
     //FindAll UserList
     fun getUsers(): MutableList<UserEntity>{
         return userRepository.findAll()
@@ -106,7 +117,6 @@ class UserService(private val userRepository: UserRepository, private val attend
             email = request.email,
             password = request.password,
             createdAt = request.createdAt,
-            createdUser = request.createdUser,
             updatedAt = request.updatedAt,
             updatedUser = request.updatedUser
         )
@@ -124,7 +134,6 @@ class UserService(private val userRepository: UserRepository, private val attend
             user?.let { it.email = request.email }
             user?.let { it.password = request.password }
             user?.let { it.createdAt = request.createdAt }
-            user?.let { it.createdUser = request.createdUser }
             user?.let { it.updatedAt = request.updatedAt }
             user?.let { it.updatedUser = request.updatedUser }
         }

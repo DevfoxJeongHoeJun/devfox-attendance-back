@@ -11,23 +11,16 @@ import com.attend.attendance_api.dto.LoginRequest
 import com.attend.attendance_api.dto.LoginResDto
 import com.attend.attendance_api.service.UserService
 import com.attend.attendance_api.dto.UserRequest
-import com.attend.attendance_api.entity.AttendEntity
 import com.attend.attendance_api.entity.UserEntity
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.service.annotation.PutExchange
-import java.time.LocalDate
-import java.time.LocalDateTime
 
-@CrossOrigin(origins = ["http://localhost:8080", "http://localhost:30000"])
 @RestController
 @RequestMapping("/api/user")
 class UserController(private val userService: UserService) {
@@ -88,5 +81,13 @@ class UserController(private val userService: UserService) {
     }
     
     //アプリ管理者画面------------------------------------------
-
+     @PostMapping("/appUserList")
+    fun login(session: HttpSession, @RequestBody role: String): ApiResponse<String> {
+        return ApiResponse(HttpStatus.OK, "success","sessionCheck")
+    }
+    @GetMapping("/existsByEmail/{email}")
+    fun existsByEmail(@PathVariable email: String): ApiResponse<Boolean> {
+        val existsByEmail = userService.existsByEmail(email);
+        return ApiResponse(HttpStatus.OK, "成功", existsByEmail)
+    }
 }
