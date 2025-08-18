@@ -1,10 +1,13 @@
 package com.attend.attendance_api.service
 
 import com.attend.attendance_api.dto.UserRequest
+import com.attend.attendance_api.dto.UserResponse
+import com.attend.attendance_api.dto.UsersListResponse
 import com.attend.attendance_api.repository.GroupRepository
 import com.attend.attendance_api.repository.UserRepository
 import org.springframework.stereotype.Service
-import com.attend.attendance_api.dto.UserResponse
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 @Service
 class AppService(
@@ -32,5 +35,7 @@ class AppService(
         userRepository.deleteById(id)
     }
 
-
+    fun getUsersWithGroup(pageable: Pageable): Page<UsersListResponse> {
+        return userRepository.getUsersWithGroup(pageable)
+    }
 }

@@ -1,13 +1,17 @@
 package com.attend.attendance_api.controller
 
 import com.attend.attendance_api.dto.UserRequest
+import com.attend.attendance_api.dto.UserResponse
+import com.attend.attendance_api.dto.UsersListResponse
 import com.attend.attendance_api.service.AppService
 import com.attend.attendance_api.service.GroupService
-import org.springframework.web.bind.annotation.*
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import com.attend.attendance_api.dto.UserResponse
+import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["http://localhost:60259"])
+@CrossOrigin(origins = ["http://localhost:*"])
 @RestController
 @RequestMapping("/api/app")
 class AppController(
@@ -33,4 +37,12 @@ class AppController(
         return ResponseEntity.ok("削除完了")
     }
 
+    @GetMapping("/usersList")
+    fun getUsers(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): Page<UsersListResponse> {
+        val pageable: Pageable = PageRequest.of(page, size)
+        return appService.getUsersWithGroup(pageable)
+    }
 }

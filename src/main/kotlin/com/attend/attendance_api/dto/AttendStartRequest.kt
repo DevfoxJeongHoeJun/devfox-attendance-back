@@ -1,5 +1,7 @@
 package com.attend.attendance_api.dto
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import jakarta.persistence.Column
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -7,14 +9,19 @@ data class AttendStartRequest (
 
 //    val id: Long,
     val userId: Long,
+
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val date: LocalDate,
+
     val type: String,
+
+    @field:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     val startTime: LocalDateTime,
+
     var startLocation: String,
-//    val endTime: LocalDateTime,
-//    var endLocation: String,
-    var createdAt: LocalDateTime,
-    var createdUser: Long,
-//    var updatedAt: LocalDateTime,
-//    var updatedUser: Long
+
+    var createdAt: LocalDateTime= LocalDateTime.now(),
+
+    var createdUser: Long=userId,
+
 )

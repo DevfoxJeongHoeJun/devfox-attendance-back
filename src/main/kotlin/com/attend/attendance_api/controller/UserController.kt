@@ -35,7 +35,7 @@ class UserController(private val userService: UserService) {
     @PostMapping("/login")
     fun login(session: HttpSession, res: HttpServletResponse,
               @RequestBody loginRequest: LoginRequest): ApiResponse<LoginResDto> {
-        val loginResDto: LoginResDto = userService.login(session, loginRequest, res)
+        val loginResDto: LoginResDto? = userService.login(session, loginRequest, res)
 
         if (loginResDto != null) {
             return ApiResponse(HttpStatus.OK, "成功",loginResDto)
@@ -75,9 +75,9 @@ class UserController(private val userService: UserService) {
     }
 
     @PostMapping("/addAttend") //出勤処理
-    fun addAttendRecord(@RequestBody request: AttendStartRequest): ResponseEntity<String>{
-        userService.startWork(request)
-        return ResponseEntity.ok("出勤処理完了")
+    fun addAttendRecord(@RequestBody request: AttendStartRequest): ResponseEntity<Map<String,Long>>{
+        val saved = userService.startWork(request)
+        return ResponseEntity.ok(mapOf("id" to saved.id)) //出勤処理完了
     }
 
     @PutMapping("/update/{attendId}")//退勤処理
@@ -88,8 +88,5 @@ class UserController(private val userService: UserService) {
     }
     
     //アプリ管理者画面------------------------------------------
-     @PostMapping("/appUserList")
-    fun login(session: HttpSession, @RequestBody role: String): ApiResponse<String> {
-        return ApiResponse(HttpStatus.OK, "success","sessionCheck")
-    }
+
 }
