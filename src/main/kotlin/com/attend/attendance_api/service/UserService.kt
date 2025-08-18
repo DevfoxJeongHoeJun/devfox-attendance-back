@@ -137,10 +137,16 @@ class UserService(private val userRepository: UserRepository, private val attend
         }
     //出勤処理
     fun startWork(request: AttendStartRequest): AttendEntity {
+
+        val typeCode = when (request.type) {
+            "出社" -> 1
+            "在宅" -> 2
+            else -> 0
+        }
         val attend = AttendEntity(
             userId = request.userId,
             date = request.date,
-            type = request.type,
+            type = typeCode.toString(),
             startTime = request.startTime,
             startLocation = request.startLocation,
             endTime = null,
