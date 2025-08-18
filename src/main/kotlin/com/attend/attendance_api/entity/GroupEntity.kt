@@ -28,8 +28,8 @@ class GroupEntity(
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @Column(insertable = false)
-    var createdUser: Long,
+    @Column(nullable = false)
+    var createdUser: Long? = null,
 
     @UpdateTimestamp
     @Column(insertable = false)
