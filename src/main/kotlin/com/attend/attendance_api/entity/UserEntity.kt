@@ -14,33 +14,32 @@ data class UserEntity(
     var id: Long? = null,
 
     @Column(nullable = false)
-    var accessLevelCode: String,
+    var accessLevelCode: String = "",
 
     @Column(nullable = false)
-    var groupCode: String,
+    var groupCode: String = "",
 
     @Column(nullable = false)
-    var name: String,
+    var name: String = "",
 
     @Column(nullable = false, length = 100)
     @Email
-    var email: String,
+    var email: String = "",
 
     @Column(nullable = false)
-    var password: String,
+    var password: String = "",
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(insertable = false)
-    var createdUser: Long,
+    var createdUser: Long = 0L,
 
     @UpdateTimestamp
     @Column(insertable = false)
-    var updatedAt: LocalDateTime? = LocalDateTime.now(),
+    var updatedAt: LocalDateTime? = null,
 
     @Column(insertable = false)
     var updatedUser: Long? = null,
-
-    )
+)
