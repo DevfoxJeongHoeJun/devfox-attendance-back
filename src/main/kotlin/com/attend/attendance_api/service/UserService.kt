@@ -16,58 +16,82 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 
 @Service
-class UserService(private val userRepository: UserRepository, private val attendanceRepository: AttendanceRepository) {
+class UserService(
+    private val userRepository: UserRepository,
+    private val attendanceRepository: AttendanceRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
 
-    fun login(session: HttpSession,loginRequest: LoginRequest,res: HttpServletResponse): LoginResDto {
-        var userEntiry : UserEntity?
-        userEntiry = userRepository.findByEmail(loginRequest.email)
+    fun login(session: HttpSession,loginRequest: LoginRequest,res: HttpServletResponse): LoginResDto? {
+
+        val userEntity = userRepository.findByEmail(loginRequest.email)
+            .orElse(null)
 
 
-        if(userEntiry != null){
+        if(userEntity != null){
 
-            if (userEntiry.password == loginRequest.password){
+            if (userEntity.password == passwordEncoder.encode(loginRequest.password)){
 
-                if(userEntiry != null){
-                    session.setAttribute("username", userEntiry.name)
-                    session.setAttribute("userId", userEntiry.id)
-                    session.setAttribute("role", userEntiry.accessLevelCode)
-                    session.setAttribute("groupCode", userEntiry.groupCode)
+                if(userEntity != null){
+                    session.setAttribute("username", userEntity.name)
+                    session.setAttribute("userId", userEntity.id)
+                    session.setAttribute("role", userEntity.accessLevelCode)
+                    session.setAttribute("groupCode", userEntity.groupCode)
 
                     val cookieUserName = Cookie("username",  session.getAttribute("username")?.toString())
                     cookieUserName.isHttpOnly = true
                     cookieUserName.secure = false
-                    cookieUserName.maxAge = 60 * 60 * 12;
+                    cookieUserName.maxAge = 60 * 60 * 12
+                    cookieUserName.path = "/"
                     val cookieUserId = Cookie("userId", session.getAttribute("userId")?.toString())
                     cookieUserId.isHttpOnly = true
                     cookieUserId.secure = false
-                    cookieUserId.maxAge = 60 * 60 * 12;
+                    cookieUserId.maxAge = 60 * 60 * 12
+                    cookieUserId.path = "/"
                     val cookieRole = Cookie("role", session.getAttribute("role")?.toString())
                     cookieRole.isHttpOnly = true
                     cookieRole.secure = false
-                    cookieRole.maxAge = 60 * 60 * 12;
+                    cookieRole.maxAge = 60 * 60 * 12
+                    cookieRole.path = "/"
                     val cookieGroupCode = Cookie("groupCode", session.getAttribute("groupCode")?.toString())
                     cookieGroupCode.isHttpOnly = true
                     cookieGroupCode.secure = false
-                    cookieGroupCode.maxAge = 60 * 60 * 12;
+                    cookieGroupCode.maxAge = 60 * 60 * 12
+                    cookieGroupCode.path = "/"
+                    val cookieSessionId = Cookie("cookieSessionId", session.id)
+                    cookieSessionId.isHttpOnly = true
+                    cookieSessionId.secure = false
+                    cookieSessionId.maxAge = 60 * 60 * 12
+                    cookieSessionId.path = "/"
 
+
+                    res.addCookie(cookieSessionId)
                     res.addCookie(cookieUserName)
                     res.addCookie(cookieUserId)
                     res.addCookie(cookieRole)
                     res.addCookie(cookieGroupCode)
 
                 }
-                var loginResDto = LoginResDto(userEntiry)
+                var loginResDto = LoginResDto(userEntity)
                 return loginResDto;
             }
 
+        } else {
+            return null;
         }
-            var loginResDto = LoginResDto(userEntiry)
-        return loginResDto;
+        return null;
+    }
+
+    fun existsByEmail(email: String): Boolean {
+        val existsByEmail = userRepository.existsByEmail(email);
+
+        return existsByEmail;
     }
 
     //FindAll UserList
@@ -93,7 +117,6 @@ class UserService(private val userRepository: UserRepository, private val attend
             email = request.email,
             password = request.password,
             createdAt = request.createdAt,
-            createdUser = request.createdUser,
             updatedAt = request.updatedAt,
             updatedUser = request.updatedUser
         )
@@ -111,7 +134,6 @@ class UserService(private val userRepository: UserRepository, private val attend
             user?.let { it.email = request.email }
             user?.let { it.password = request.password }
             user?.let { it.createdAt = request.createdAt }
-            user?.let { it.createdUser = request.createdUser }
             user?.let { it.updatedAt = request.updatedAt }
             user?.let { it.updatedUser = request.updatedUser }
         }
@@ -133,12 +155,17 @@ class UserService(private val userRepository: UserRepository, private val attend
             }
         }
     //出勤処理
-    fun startWork(request: AttendStartRequest) {
+    fun startWork(request: AttendStartRequest): AttendEntity {
+
+        val typeCode = when (request.type) {
+            "出社" -> 1
+            "在宅" -> 2
+            else -> 0
+        }
         val attend = AttendEntity(
-            id = 0, // auto increment
             userId = request.userId,
             date = request.date,
-            type = request.type,
+            type = typeCode.toString(),
             startTime = request.startTime,
             startLocation = request.startLocation,
             endTime = null,
@@ -148,7 +175,7 @@ class UserService(private val userRepository: UserRepository, private val attend
             updatedAt = null,
             updatedUser = null
         )
-        attendanceRepository.save(attend)
+        return attendanceRepository.save(attend)
     }
     //退勤処理
     fun endWork(attendId: Long, request: AttendEndRequest) {

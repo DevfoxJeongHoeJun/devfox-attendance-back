@@ -33,9 +33,6 @@ data class UserEntity(
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @Column(insertable = false)
-    var createdUser: Long,
-
     @UpdateTimestamp
     @Column(insertable = false)
     var updatedAt: LocalDateTime? = LocalDateTime.now(),
