@@ -69,4 +69,5 @@ interface UserRepository: JpaRepository<UserEntity, Long> {
         nativeQuery = true
     )
     fun getUsersWithGroup(pageable: Pageable): Page<UsersListResponse>
+    fun existsByEmail(email: String): Boolean
 }
