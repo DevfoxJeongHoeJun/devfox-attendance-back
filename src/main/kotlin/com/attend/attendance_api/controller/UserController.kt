@@ -75,9 +75,9 @@ class UserController(private val userService: UserService) {
     }
 
     @PostMapping("/addAttend") //出勤処理
-    fun addAttendRecord(@RequestBody request: AttendStartRequest): ResponseEntity<String>{
-        userService.startWork(request)
-        return ResponseEntity.ok("出勤処理完了")
+    fun addAttendRecord(@RequestBody request: AttendStartRequest): ResponseEntity<Map<String,Long>>{
+        val saved = userService.startWork(request)
+        return ResponseEntity.ok(mapOf("id" to saved.id)) //出勤処理完了
     }
 
     @PutMapping("/update/{attendId}")//退勤処理
