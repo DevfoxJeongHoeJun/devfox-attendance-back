@@ -35,7 +35,7 @@ class AttendEntity(
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @Column(insertable = false)
+    @Column(nullable = false)
     var createdUser: Long,
 
     @UpdateTimestamp
