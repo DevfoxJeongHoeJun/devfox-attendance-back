@@ -24,14 +24,35 @@ import org.springframework.web.bind.annotation.RestController
 class AppController(
     private val appService: AppService
 ) {
+//    @GetMapping("/usersList")
+//    fun getUsers(
+//        @RequestParam(defaultValue = "0") page: Int,
+//        @RequestParam(defaultValue = "10") size: Int): Page<UsersListResponse> {
+//        val pageable: Pageable = PageRequest.of(page, size)
+//        val response: Page<UsersListResponse> = appService.getUsersWithGroup(pageable)
+//
+//        return response
+//    }
+//    @GetMapping("/searchUsersList")
+//    fun getSearchUsers(
+//        @RequestParam(defaultValue = "0") page: Int,
+//        @RequestParam(defaultValue = "10") size: Int,
+//        @RequestParam username: String
+//    ): Page<UsersListResponse> {
+//        val pageable: Pageable = PageRequest.of(page, size)
+//        println(appService.searchUsersWithGroup(pageable, username))
+//        return appService.searchUsersWithGroup(pageable, username)
+//    }
     @GetMapping("/usersList")
-    fun getUsers(
-                 @RequestParam(defaultValue = "0") page: Int,
-                 @RequestParam(defaultValue = "10") size: Int): Page<UsersListResponse> {
-        val pageable: Pageable = PageRequest.of(page, size)
-        val response: Page<UsersListResponse> = appService.getUsersWithGroup(pageable)
-
+    fun getUsers(): List<UsersListResponse> {
+        val response: List<UsersListResponse> = appService.getUsersWithGroup()
         return response
+    }
+
+    @GetMapping("/searchUsersList")
+    fun getSearchUsers(
+        @RequestParam username: String): List<UsersListResponse> {
+        return appService.searchUsersWithGroup(username)
     }
 
 }

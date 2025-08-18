@@ -80,8 +80,7 @@ class UserService(private val userRepository: UserRepository, private val attend
         } else {
             return null;
         }
-        var loginResDto = LoginResDto(userEntity)
-        return loginResDto;
+        return null;
     }
 
     //FindAll UserList

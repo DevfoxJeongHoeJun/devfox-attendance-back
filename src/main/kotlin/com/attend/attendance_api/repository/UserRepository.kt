@@ -14,6 +14,56 @@ import java.util.Optional
 interface UserRepository: JpaRepository<UserEntity, Long> {
     fun findByEmail(email: String): Optional<UserEntity>
 
+//    @Query(
+//        value = """
+//        SELECT
+//            u.id AS user_id,
+//            u.name AS user_name,
+//            g.name AS group_name,
+//            u.access_level_code
+//        FROM users u
+//        LEFT JOIN groups g
+//            ON u.group_code = g.code
+//        WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
+//          AND u.name LIKE %:username%
+//        ORDER BY u.id
+//    """,
+////        countQuery = """
+////        SELECT COUNT(*)
+////        FROM users u
+////        LEFT JOIN groups g
+////            ON u.group_code = g.code
+////        WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
+////          AND u.name LIKE %:username%
+////    """,
+//        nativeQuery = true
+//    )
+//    fun getUsersWithGroupSearch(@Param("username") username: String, pageable: Pageable): Page<UsersListResponse>
+//
+//    @Query(
+//        value = """
+//    SELECT
+//        u.id AS user_id,
+//        u.name AS user_name,
+//        g.name AS group_name,
+//        u.access_level_code
+//    FROM users u
+//    LEFT JOIN groups g
+//        ON u.group_code = g.code
+//    WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
+//    ORDER BY u.id
+//""",
+////        countQuery = """
+////    SELECT COUNT(*)
+////    FROM users u
+////    LEFT JOIN groups g
+////        ON u.group_code = g.code
+////    WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
+////""",
+//        nativeQuery = true
+//    )
+//    fun getUsersWithGroup(pageable: Pageable): Page<UsersListResponse>
+
     @Query(
         value = """
         SELECT 
@@ -24,27 +74,21 @@ interface UserRepository: JpaRepository<UserEntity, Long> {
         FROM users u
         LEFT JOIN groups g
             ON u.group_code = g.code
-        WHERE u.group_code = :groupCode
-          AND (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
-          AND u.name LIKE CONCAT('%', :userName, '%')
+        WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
+          AND u.name LIKE %:username%
         ORDER BY u.id
     """,
-        countQuery = """
-        SELECT COUNT(*)
-        FROM users u
-        LEFT JOIN groups g
-            ON u.group_code = g.code
-        WHERE u.group_code = :groupCode
-          AND (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
-          AND u.name LIKE CONCAT('%', :userName, '%')
-    """,
+//        countQuery = """
+//        SELECT COUNT(*)
+//        FROM users u
+//        LEFT JOIN groups g
+//            ON u.group_code = g.code
+//        WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
+//          AND u.name LIKE %:username%
+//    """,
         nativeQuery = true
     )
-    fun getUsersWithGroupSearch(
-        @Param("groupCode") groupCode: String,
-        @Param("userName") userName: String,
-        pageable: Pageable
-    ): Page<AttendListResponse>
+    fun getUsersWithGroupSearch(@Param("username") username: String): List<UsersListResponse>
 
     @Query(
         value = """
@@ -59,14 +103,14 @@ interface UserRepository: JpaRepository<UserEntity, Long> {
     WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
     ORDER BY u.id
 """,
-        countQuery = """
-    SELECT COUNT(*)
-    FROM users u
-    LEFT JOIN groups g
-        ON u.group_code = g.code
-    WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
-""",
+//        countQuery = """
+//    SELECT COUNT(*)
+//    FROM users u
+//    LEFT JOIN groups g
+//        ON u.group_code = g.code
+//    WHERE (u.access_level_code = 'ROLE_USER' OR u.access_level_code = 'ROLE_MANAGER')
+//""",
         nativeQuery = true
     )
-    fun getUsersWithGroup(pageable: Pageable): Page<UsersListResponse>
+    fun getUsersWithGroup(): List<UsersListResponse>
 }
