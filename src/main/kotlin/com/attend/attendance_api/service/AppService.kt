@@ -35,7 +35,19 @@ class AppService(
         userRepository.deleteById(id)
     }
 
-    fun getUsersWithGroup(pageable: Pageable): Page<UsersListResponse> {
-        return userRepository.getUsersWithGroup(pageable)
+//    fun getUsersWithGroup(pageable: Pageable): Page<UsersListResponse> {
+//        return userRepository.getUsersWithGroup(pageable)
+//    }
+//
+//    fun searchUsersWithGroup(pageable: Pageable, username: String): Page<UsersListResponse> {
+//        return userRepository.getUsersWithGroupSearch(username, pageable)
+//    }
+
+    fun getUsersWithGroup(): List<UsersListResponse> {
+        return userRepository.getUsersWithGroup()
+    }
+
+    fun searchUsersWithGroup(username: String): List<UsersListResponse> {
+        return userRepository.getUsersWithGroupSearch(username)
     }
 }
