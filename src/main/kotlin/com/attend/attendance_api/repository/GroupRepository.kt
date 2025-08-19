@@ -14,4 +14,7 @@ interface GroupRepository: JpaRepository<GroupEntity, Long> {
         FROM public.groups
     """, nativeQuery = true)
     fun getMaxGroupCode(): Int
+
+    // グループコードからグループ詳細情報を取得
+    fun findByCode(groupCode: String): GroupEntity
 }
