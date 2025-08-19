@@ -10,9 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:30000") //
-            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedOriginPatterns("http://localhost:*")
+            .allowedMethods("*")
+            .allowedHeaders("*")
             .allowCredentials(true)
-            .exposedHeaders("Set-Cookie");
     }
 }
