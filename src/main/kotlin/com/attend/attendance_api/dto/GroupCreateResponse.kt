@@ -8,5 +8,6 @@ class GroupCreateResponse(
     val domain: String,
     val userName: String,
     val email: String,
+    val memberCount: Long
 
 )
