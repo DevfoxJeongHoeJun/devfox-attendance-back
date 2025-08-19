@@ -93,7 +93,8 @@ class GroupService(
             address = saveGroup.address,
             domain = saveGroup.domain,
             userName = saveUser.name,
-            email = saveUser.email
+            email = saveUser.email,
+            memberCount = 0
         )
     }
 

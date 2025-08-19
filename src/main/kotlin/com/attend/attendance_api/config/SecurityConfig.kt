@@ -33,6 +33,7 @@ class SecurityConfig {
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
 
+
         return http.build();
     }
 

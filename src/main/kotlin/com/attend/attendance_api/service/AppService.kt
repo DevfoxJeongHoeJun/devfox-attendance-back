@@ -1,13 +1,12 @@
 package com.attend.attendance_api.service
 
+import com.attend.attendance_api.dto.GroupCreateResponse
 import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.dto.UserResponse
 import com.attend.attendance_api.dto.UsersListResponse
 import com.attend.attendance_api.repository.GroupRepository
 import com.attend.attendance_api.repository.UserRepository
 import org.springframework.stereotype.Service
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 
 @Service
 class AppService(
@@ -49,5 +48,20 @@ class AppService(
 
     fun searchUsersWithGroup(username: String): List<UsersListResponse> {
         return userRepository.getUsersWithGroupSearch(username)
+    }
+
+    fun getGroups(keyword: String?): List<GroupCreateResponse> {
+        val projections = groupRepository.findGroupsWithMemberCount(keyword)
+        return projections.map { p ->
+            GroupCreateResponse(
+                groupCode = p.groupCode,
+                groupName = p.groupName,
+                address = p.address,
+                domain = p.domain,
+                memberCount = p.memberCount,
+                userName = "",
+                email = ""
+            )
+        }
     }
 }
