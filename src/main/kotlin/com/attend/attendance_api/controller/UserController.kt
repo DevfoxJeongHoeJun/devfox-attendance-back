@@ -9,8 +9,10 @@ import com.attend.attendance_api.dto.AttendStartRequest
 import com.attend.attendance_api.dto.AttendResponse
 import com.attend.attendance_api.dto.LoginRequest
 import com.attend.attendance_api.dto.LoginResDto
+import com.attend.attendance_api.dto.UserCreateRequest
 import com.attend.attendance_api.service.UserService
 import com.attend.attendance_api.dto.UserRequest
+import com.attend.attendance_api.dto.UserResponse
 import com.attend.attendance_api.entity.UserEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -53,11 +55,13 @@ class UserController(private val userService: UserService) {
         return userService.getUsers()
     }
 
-    //入力したユーザーでーたをデータベースに保存する
-    @PostMapping("/addDummyUser")
-    fun add(@RequestBody request: UserRequest): String {
-        userService.saveDummyUser(request)
-        return "user Add Success!"
+    // 新規登録（一般ユーザー）
+    @PostMapping("/create")
+    fun createUser(
+        @RequestBody request: UserCreateRequest
+    ): ApiResponse<UserResponse> {
+        val response = userService.createUser(request)
+        return ApiResponse(HttpStatus.OK, "成功", response)
     }
 
     //勤怠打刻画面------------------------------------------
