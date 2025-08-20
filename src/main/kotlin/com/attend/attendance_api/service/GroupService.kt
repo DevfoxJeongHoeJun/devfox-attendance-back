@@ -4,6 +4,9 @@ import com.attend.attendance_api.dto.AttendListRequest
 import com.attend.attendance_api.dto.AttendListResponse
 import com.attend.attendance_api.dto.GroupCreateRequest
 import com.attend.attendance_api.dto.GroupCreateResponse
+import com.attend.attendance_api.dto.GroupInfoResponse
+import com.attend.attendance_api.dto.GroupUpdateRequest
+import com.attend.attendance_api.dto.GroupUpdateResponse
 import com.attend.attendance_api.entity.GroupEntity
 import com.attend.attendance_api.entity.UserEntity
 import com.attend.attendance_api.repository.AttendanceRepository
@@ -42,6 +45,20 @@ class GroupService(
         return attendList
     }
 
+    // グループコードから該当グループの詳細情報を取得
+    fun getGroupInfoByGroupCode(
+        groupCode: String
+    ): GroupInfoResponse {
+        val group = groupRepository.findByCode(groupCode);
+
+        return GroupInfoResponse(
+            groupCode = group.code,
+            groupName = group.name,
+            groupAddress = group.address,
+            groupDomain = group.domain
+        )
+    }
+
     // 新規登録（グループとグループ管理者）
     @Transactional
     fun createGroupAndAdmin(
@@ -76,7 +93,27 @@ class GroupService(
             address = saveGroup.address,
             domain = saveGroup.domain,
             userName = saveUser.name,
-            email = saveUser.email
+            email = saveUser.email,
+            memberCount = 0
+        )
+    }
+
+    // グループ情報を編集
+    @Transactional
+    fun updateGroup(
+        request: GroupUpdateRequest
+    ): GroupUpdateResponse {
+
+        var group = groupRepository.findByCode(request.groupCode)
+
+        request.groupName.takeIf { it.isNotBlank() }?.let { group.name = it }
+        request.groupAddress.takeIf { it.isNotBlank() }?.let { group.address = it }
+
+        return GroupUpdateResponse(
+            groupCode = group.code,
+            groupName = group.name,
+            groupAddress = group.address,
+            groupDomain = group.domain
         )
     }
 }

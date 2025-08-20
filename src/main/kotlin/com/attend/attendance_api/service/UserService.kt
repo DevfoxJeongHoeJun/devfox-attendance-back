@@ -5,10 +5,12 @@ import com.attend.attendance_api.dto.AttendResponse
 import com.attend.attendance_api.dto.AttendStartRequest
 import com.attend.attendance_api.dto.LoginRequest
 import com.attend.attendance_api.dto.LoginResDto
+import com.attend.attendance_api.dto.UserCreateRequest
 import com.attend.attendance_api.entity.UserEntity
 import com.attend.attendance_api.repository.UserRepository
 import jakarta.servlet.http.HttpSession
 import com.attend.attendance_api.dto.UserRequest
+import com.attend.attendance_api.dto.UserResponse
 import com.attend.attendance_api.entity.AttendEntity
 import com.attend.attendance_api.repository.AttendanceRepository
 import jakarta.persistence.EntityNotFoundException
@@ -103,36 +105,25 @@ class UserService(
     }
 
     //Save User
-    fun saveDummyUser(request: UserRequest){
-        //ユーザーを先に作る
+    fun createUser(
+        request: UserCreateRequest
+    ): UserResponse {
+        val encodedPassword: String = passwordEncoder.encode(request.password);
+
         val user = UserEntity(
-            id = request.id,
-            accessLevelCode = request.accessLevelCode,
+            accessLevelCode = "ROLE_USER",
             groupCode = request.groupCode,
             name = request.name,
             email = request.email,
-            password = request.password,
-            createdAt = request.createdAt,
-            updatedAt = request.updatedAt,
-            updatedUser = request.updatedUser
+            password = encodedPassword,
         )
-        userRepository.save(user)//ユーザーを作成した後
+        val saveUser = userRepository.save(user);
 
-        //ここでトランザクション、
-        @Transactional
-        fun updateUser(request: UserRequest) {
-            val user = userRepository.findById(request.id)
-                .orElseThrow { IllegalArgumentException("User not found") }//ユーザーが存在しない場合エーラーを発生します。
-            user?.let { it.id = request.id }
-            user?.let { it.accessLevelCode = request.accessLevelCode }
-            user?.let { it.groupCode = request.groupCode }
-            user?.let { it.name = request.name }
-            user?.let { it.email = request.email }
-            user?.let { it.password = request.password }
-            user?.let { it.createdAt = request.createdAt }
-            user?.let { it.updatedAt = request.updatedAt }
-            user?.let { it.updatedUser = request.updatedUser }
-        }
+        return UserResponse(
+            id = user.id,
+            name = user.name,
+            email = user.email
+        )
     }
 
     //Attendからユーザーを探す

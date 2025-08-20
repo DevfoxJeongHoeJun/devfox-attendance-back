@@ -39,5 +39,4 @@ data class UserEntity(
 
     @Column(insertable = false)
     var updatedUser: Long? = null,
-
     )

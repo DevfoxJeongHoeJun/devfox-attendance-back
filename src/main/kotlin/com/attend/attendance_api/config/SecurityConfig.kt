@@ -33,6 +33,7 @@ class SecurityConfig {
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
 
+
         return http.build();
     }
 
@@ -41,7 +42,7 @@ class SecurityConfig {
     fun corsConfigurationSource(): CorsConfigurationSource {
         val config = CorsConfiguration().apply {
             allowedOriginPatterns = listOf(
-                "http://localhost:30000"
+                "http://localhost:*"
             )
             allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")

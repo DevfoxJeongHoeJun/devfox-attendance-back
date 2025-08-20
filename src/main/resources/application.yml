@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/attendance_db
     username: postgres
-    password: 162534
+    password: 1234
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -12,6 +12,15 @@ spring:
       ddl-auto: update
       show-sql: true
       dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "jeonghj@devfox.co.jp"
+    password: "kgas uoaa ngng nxhe"
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
 
 sql:
   init:
