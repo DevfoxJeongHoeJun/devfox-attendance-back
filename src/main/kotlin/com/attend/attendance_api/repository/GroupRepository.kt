@@ -24,14 +24,14 @@ interface GroupRepository : JpaRepository<GroupEntity, Long> {
     @Query(
         """
         SELECT 
-            g.code AS code,
-            g.name AS name,
-            g.address AS address,
-            g.domain AS domain,
-            COUNT(u.id) AS memberCount
+        g.code AS code,
+        g.name AS groupName,
+        g.address AS address,
+        g.domain AS domain,
+        COUNT(u.id) AS memberCount
         FROM groups g
-        LEFT JOIN users u ON g.id = u.group_id
-        WHERE (:keyword IS NULL OR LOWER(g.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
+        LEFT JOIN users u ON g.code = u.group_code
+        WHERE (:name IS NULL OR LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%')))
         GROUP BY g.id, g.code, g.name, g.address, g.domain
     """,
         nativeQuery = true
@@ -42,15 +42,15 @@ interface GroupRepository : JpaRepository<GroupEntity, Long> {
         """
     SELECT 
         g.code AS code,
-        g.name AS name,
+        g.name AS groupName,
         g.address AS address,
         g.domain AS domain,
         COUNT(u.id) AS memberCount
-    FROM groups g
-    LEFT JOIN users u ON g.id = u.group_id
-    WHERE (:name IS NULL OR LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%')))
-    GROUP BY g.id, g.code, g.name, g.address, g.domain
-    """,
+        FROM groups g
+        LEFT JOIN users u ON g.code = u.group_code
+        WHERE (:name IS NULL OR LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%')))
+        GROUP BY g.id, g.code, g.name, g.address, g.domain
+        """,
         nativeQuery = true
     )
     fun findByNameContainingIgnoreCase(@Param("name") name: String?): List<GroupProjection>
