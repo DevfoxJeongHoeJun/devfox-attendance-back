@@ -37,4 +37,7 @@ class GroupEntity(
 
     @Column(insertable = false)
     var updatedUser: Long? = null,
+
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
+    val members: List<UserEntity> = emptyList()
 )

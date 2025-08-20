@@ -1,6 +1,7 @@
 package com.attend.attendance_api.controller
 
-import com.attend.attendance_api.dto.GroupCreateResponse
+
+
 import com.attend.attendance_api.dto.GroupProjection
 import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.dto.UserResponse
@@ -50,6 +51,7 @@ class AppController(
             appService.searchGroupsByName(name)
         } else {
             appService.searchGroupsByName("")
+
         }
     }
 

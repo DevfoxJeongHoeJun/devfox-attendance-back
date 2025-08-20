@@ -18,9 +18,6 @@ interface GroupRepository : JpaRepository<GroupEntity, Long> {
     )
     fun getMaxGroupCode(): Int
 
-    // グループコードからグループ詳細情報を取得
-    fun findByCode(groupCode: String): GroupEntity
-
     @Query(
         """
     SELECT 
@@ -39,5 +36,4 @@ interface GroupRepository : JpaRepository<GroupEntity, Long> {
     fun findByNameContainingIgnoreCase(@Param("name") name: String?): List<GroupProjection>
 
     fun findByCode(groupCode: String): GroupEntity
-
 }
