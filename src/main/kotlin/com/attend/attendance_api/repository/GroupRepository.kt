@@ -23,23 +23,6 @@ interface GroupRepository : JpaRepository<GroupEntity, Long> {
 
     @Query(
         """
-        SELECT 
-        g.code AS code,
-        g.name AS groupName,
-        g.address AS address,
-        g.domain AS domain,
-        COUNT(u.id) AS memberCount
-        FROM groups g
-        LEFT JOIN users u ON g.code = u.group_code
-        WHERE (:name IS NULL OR LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%')))
-        GROUP BY g.id, g.code, g.name, g.address, g.domain
-    """,
-        nativeQuery = true
-    )
-    fun findGroupsWithMemberCount(@Param("keyword") keyword: String?): List<GroupProjection>
-
-    @Query(
-        """
     SELECT 
         g.code AS code,
         g.name AS groupName,
