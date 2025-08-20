@@ -1,6 +1,8 @@
 package com.attend.attendance_api.controller
 
-import com.attend.attendance_api.dto.GroupCreateResponse
+
+
+import com.attend.attendance_api.dto.GroupProjection
 import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.dto.UserResponse
 import com.attend.attendance_api.dto.UsersListResponse
@@ -44,11 +46,12 @@ class AppController(
     }
 
     @GetMapping("/groups")
-    fun getGroups(@RequestParam(required = false) name: String?): List<GroupCreateResponse> {
+    fun getGroups(@RequestParam(required = false) name: String?): List<GroupProjection> {
         return if (!name.isNullOrBlank()) {
             appService.searchGroupsByName(name)
         } else {
-            appService.getAllGroups()
+            appService.searchGroupsByName("")
+
         }
     }
 
