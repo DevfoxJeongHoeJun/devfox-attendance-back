@@ -54,22 +54,22 @@ class GroupController(
     }
 
     // グループ情報を編集
-    @PostMapping("/update")
-    fun updateGroup(
-        @RequestBody request: GroupUpdateRequest
-    ): ApiResponse<GroupUpdateResponse>{
-        val response: GroupUpdateResponse = groupService.updateGroup(request);
-
-        return ApiResponse(HttpStatus.OK, "成功", response)
-    }
+//    @PostMapping("/update")
+//    fun updateGroup(
+//        @RequestBody request: GroupUpdateRequest
+//    ): ApiResponse<GroupUpdateResponse>{
+//        val response: GroupUpdateResponse = groupService.updateGroup(request);
+//
+//        return ApiResponse(HttpStatus.OK, "成功", response)
+//    }
 
     // 勤怠詳細画面ー初期値取得API
-    @GetMapping("/info/{groupCode}")
-    fun getGroupInfoByGroupCode(
-        @PathVariable groupCode: String
-    ): ApiResponse<GroupInfoResponse> {
-        val response: GroupInfoResponse = groupService.getGroupInfoByGroupCode(groupCode);
-
-        return ApiResponse(HttpStatus.OK, "成功", response)
-    }
+//    @GetMapping("/info/{groupCode}")
+//    fun getGroupInfoByGroupCode(
+//        @PathVariable groupCode: String
+//    ): ApiResponse<GroupInfoResponse> {
+//        val response: GroupInfoResponse = groupService.getGroupInfoByGroupCode(groupCode);
+//
+//        return ApiResponse(HttpStatus.OK, "成功", response)
+//    }
 }

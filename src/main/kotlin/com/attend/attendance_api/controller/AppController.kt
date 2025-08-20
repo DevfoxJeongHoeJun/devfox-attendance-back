@@ -45,6 +45,11 @@ class AppController(
 
     @GetMapping("/groups")
     fun getGroups(@RequestParam(required = false) name: String?): List<GroupCreateResponse> {
-        return appService.getGroups(name)
+        return if (!name.isNullOrBlank()) {
+            appService.searchGroupsByName(name)
+        } else {
+            appService.getAllGroups()
+        }
     }
+
 }
