@@ -1,5 +1,7 @@
 package com.attend.attendance_api.dto
 
+import com.attend.attendance_api.entity.GroupEntity
+
 class GroupCreateResponse(
 
     val groupCode: String,
@@ -8,6 +10,26 @@ class GroupCreateResponse(
     val domain: String,
     val userName: String,
     val email: String,
-    val memberCount: Long
+    val memberCount: Int
 
-)
+){
+    companion object {
+        fun of(entity: GroupEntity): GroupCreateResponse {
+            return GroupCreateResponse(
+                groupName = entity.name,
+                memberCount = entity.members.size,
+                groupCode = "",
+                address = "",
+                domain = "",
+                userName = "",
+                email = ""
+            )
+        }
+
+        fun of(entity: GroupProjection): GroupCreateResponse {
+            TODO("Not yet implemented")
+        }
+    }
+
+
+}

@@ -45,19 +45,19 @@ class GroupService(
         return attendList
     }
 
-    // グループコードから該当グループの詳細情報を取得
-    fun getGroupInfoByGroupCode(
-        groupCode: String
-    ): GroupInfoResponse {
-        val group = groupRepository.findByCode(groupCode);
-
-        return GroupInfoResponse(
-            groupCode = group.code,
-            groupName = group.name,
-            groupAddress = group.address,
-            groupDomain = group.domain
-        )
-    }
+//    // グループコードから該当グループの詳細情報を取得
+//    fun getGroupInfoByGroupCode(
+//        groupCode: String
+//    ): GroupInfoResponse {
+//        val group = groupRepository.findByCode(groupCode);
+//
+//        return GroupInfoResponse(
+//            groupCode = group.code,
+//            groupName = group.name,
+//            groupAddress = group.address,
+//            groupDomain = group.domain
+//        )
+//    }
 
     // 新規登録（グループとグループ管理者）
     @Transactional
@@ -99,21 +99,21 @@ class GroupService(
     }
 
     // グループ情報を編集
-    @Transactional
-    fun updateGroup(
-        request: GroupUpdateRequest
-    ): GroupUpdateResponse {
-
-        var group = groupRepository.findByCode(request.groupCode)
-
-        request.groupName.takeIf { it.isNotBlank() }?.let { group.name = it }
-        request.groupAddress.takeIf { it.isNotBlank() }?.let { group.address = it }
-
-        return GroupUpdateResponse(
-            groupCode = group.code,
-            groupName = group.name,
-            groupAddress = group.address,
-            groupDomain = group.domain
-        )
-    }
+//    @Transactional
+//    fun updateGroup(
+//        request: GroupUpdateRequest
+//    ): GroupUpdateResponse {
+//
+//        var group = groupRepository.findByCode(request.groupCode)
+//
+//        request.groupName.takeIf { it.isNotBlank() }?.let { group.name = it }
+//        request.groupAddress.takeIf { it.isNotBlank() }?.let { group.address = it }
+//
+//        return GroupUpdateResponse(
+//            groupCode = group.code,
+//            groupName = group.name,
+//            groupAddress = group.address,
+//            groupDomain = group.domain
+//        )
+//    }
 }

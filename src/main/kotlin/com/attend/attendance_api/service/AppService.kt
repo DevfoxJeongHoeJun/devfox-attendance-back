@@ -54,14 +54,23 @@ class AppService(
         val projections = groupRepository.findGroupsWithMemberCount(keyword)
         return projections.map { p ->
             GroupCreateResponse(
-                groupCode = p.groupCode,
-                groupName = p.groupName,
+                groupCode = p.code,
+                groupName = p.name,
                 address = p.address,
                 domain = p.domain,
-                memberCount = p.memberCount,
+                memberCount = p.memberCount.toInt(),
                 userName = "",
                 email = ""
             )
         }
+    }
+    fun getAllGroups(): List<GroupCreateResponse> {
+        return groupRepository.findAll().map { GroupCreateResponse.of(it) }
+    }
+
+
+    fun searchGroupsByName(keyword: String): List<GroupCreateResponse> {
+        return groupRepository.findByNameContainingIgnoreCase(keyword)
+            .map { GroupCreateResponse.of(it) }
     }
 }
