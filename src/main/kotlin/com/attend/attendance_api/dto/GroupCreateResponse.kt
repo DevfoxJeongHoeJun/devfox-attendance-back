@@ -26,8 +26,16 @@ class GroupCreateResponse(
             )
         }
 
-        fun of(entity: GroupProjection): GroupCreateResponse {
-            TODO("Not yet implemented")
+        fun of(projection: GroupProjection): GroupCreateResponse {
+            return GroupCreateResponse(
+                groupCode = projection.code,
+                groupName = projection.name,
+                address = projection.address,
+                domain = projection.domain,
+                userName = "",
+                email = "",
+                memberCount = projection.memberCount.toInt()
+            )
         }
     }
 
