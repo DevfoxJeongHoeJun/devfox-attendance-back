@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -177,6 +178,25 @@ class UserService(
 
         attendanceRepository.save(attend)
     }
+
+    //勤怠詳細情報
+    fun getMonthlyRecord(userId: Long, year: Int, month: Int): Map<String, Any> {
+        val attendList = attendanceRepository.findByUserIdAndYearMonth(userId, year, month)
+
+        val totalMinutes = attendList.sumOf { record ->
+            val start = record.startTime
+            val end = record.endTime ?: start
+            java.time.Duration.between(start, end).toMinutes()
+        }
+
+        val hours = totalMinutes / 60
+
+        return mapOf(
+            "workDaysCount" to attendList.size, // 出勤数
+            "totalHours" to hours // 総勤務時間(分)
+        )
+    }
+
 }
 
 

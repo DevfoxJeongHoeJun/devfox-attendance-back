@@ -83,7 +83,20 @@ class UserController(private val userService: UserService) {
         userService.endWork(attendId, request)
         return ResponseEntity.ok("退勤処理完了")
     }
-    
+
+    //勤怠詳細画面------------------------------------------
+    @GetMapping("/searchRecord/{userId}")
+    fun getRecord(
+        @PathVariable userId: Long,
+        @RequestParam year: Int,
+        @RequestParam month: Int
+    ): ResponseEntity<Map<String, Any>> {
+        val record = userService.getMonthlyRecord(userId, year, month) // ******** Service 呼び出す ********
+
+        return ResponseEntity.ok(record)
+    }
+
+
     //アプリ管理者画面------------------------------------------
      @PostMapping("/appUserList")
     fun login(session: HttpSession, @RequestBody role: String): ApiResponse<String> {

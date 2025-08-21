@@ -1,6 +1,7 @@
 package com.attend.attendance_api.repository
 
 import com.attend.attendance_api.dto.AttendListResponse
+import com.attend.attendance_api.dto.AttendRecordRequest
 import com.attend.attendance_api.entity.AttendEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -70,4 +71,23 @@ interface AttendanceRepository: JpaRepository<AttendEntity, Long> {
     ): Page<AttendListResponse>
 
     fun findByUserIdAndDate(userId: Long, date: LocalDate): AttendEntity? //idを利用してユーザーを探す
+
+
+    //出勤日計算
+    @Query(
+      """
+        SELECT *
+        FROM attendance
+        WHERE user_id = :userId
+          AND EXTRACT(YEAR FROM date) = :year
+          AND EXTRACT(MONTH FROM date) = :month
+        """,
+        nativeQuery = true)
+    fun findByUserIdAndYearMonth(
+        @Param("userId") userId: Long,
+        @Param("year") year: Int,
+        @Param("month") month: Int
+    ): List<AttendEntity>
+
+
 }
