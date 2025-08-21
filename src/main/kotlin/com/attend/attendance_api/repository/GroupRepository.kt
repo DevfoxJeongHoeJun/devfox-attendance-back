@@ -37,7 +37,4 @@ interface GroupRepository : JpaRepository<GroupEntity, Long> {
         nativeQuery = true
     )
     fun findByNameContainingIgnoreCase(@Param("name") name: String?): List<GroupProjection>
-
-    fun findByCode(groupCode: String): GroupEntity
-
 }
