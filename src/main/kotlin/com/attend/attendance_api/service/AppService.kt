@@ -1,6 +1,7 @@
 package com.attend.attendance_api.service
 
 import com.attend.attendance_api.dto.GroupCreateResponse
+import com.attend.attendance_api.dto.GroupProjection
 import com.attend.attendance_api.dto.UserRequest
 import com.attend.attendance_api.dto.UserResponse
 import com.attend.attendance_api.dto.UsersListResponse
@@ -50,27 +51,7 @@ class AppService(
         return userRepository.getUsersWithGroupSearch(username)
     }
 
-    fun getGroups(keyword: String?): List<GroupCreateResponse> {
-        val projections = groupRepository.findGroupsWithMemberCount(keyword)
-        return projections.map { p ->
-            GroupCreateResponse(
-                groupCode = p.code,
-                groupName = p.name,
-                address = p.address,
-                domain = p.domain,
-                memberCount = p.memberCount.toInt(),
-                userName = "",
-                email = ""
-            )
-        }
-    }
-    fun getAllGroups(): List<GroupCreateResponse> {
-        return groupRepository.findAll().map { GroupCreateResponse.of(it) }
-    }
-
-
-    fun searchGroupsByName(keyword: String): List<GroupCreateResponse> {
+    fun searchGroupsByName(keyword: String): List<GroupProjection> {
         return groupRepository.findByNameContainingIgnoreCase(keyword)
-            .map { GroupCreateResponse.of(it) }
     }
 }

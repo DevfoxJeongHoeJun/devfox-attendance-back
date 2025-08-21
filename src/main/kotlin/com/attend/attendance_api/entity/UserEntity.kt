@@ -39,9 +39,4 @@ data class UserEntity(
 
     @Column(insertable = false)
     var updatedUser: Long? = null,
-
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    val group: GroupEntity? = null,
-
     )
