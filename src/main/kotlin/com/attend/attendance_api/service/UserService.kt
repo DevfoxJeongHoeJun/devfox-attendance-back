@@ -1,6 +1,7 @@
 package com.attend.attendance_api.service
 
 import com.attend.attendance_api.dto.AttendEndRequest
+import com.attend.attendance_api.dto.AttendRecordRequest
 import com.attend.attendance_api.dto.AttendResponse
 import com.attend.attendance_api.dto.AttendStartRequest
 import com.attend.attendance_api.dto.LoginRequest
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -171,6 +173,25 @@ class UserService(private val userRepository: UserRepository, private val attend
 
         attendanceRepository.save(attend)
     }
+
+    //勤怠詳細情報
+    fun getMonthlyRecord(userId: Long, year: Int, month: Int): Map<String, Any> {
+        val attendList = attendanceRepository.findByUserIdAndYearMonth(userId, year, month)
+
+        val totalMinutes = attendList.sumOf { record ->
+            val start = record.startTime
+            val end = record.endTime ?: start
+            java.time.Duration.between(start, end).toMinutes()
+        }
+
+        val hours = totalMinutes / 60
+
+        return mapOf(
+            "workDaysCount" to attendList.size, // 出勤数
+            "totalHours" to hours // 総勤務時間(分)
+        )
+    }
+
 }
 
 
